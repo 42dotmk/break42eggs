@@ -10,17 +10,21 @@ A multiplayer console based game where players join the server and compete to br
   - The loser loses 3 points and has no egg. so he needs to buy an egg to play again. An egg costs 3 points.
   - If both users break one side of the egg each then they both gain 3 points and loose the egg.
 
+   In general the program has the following arguments
+  #+begin_src shell
+  > python3 break42.py {server|client} {port} {host}
+  #+end_src
 
 * How to host your own server
   Download this repository and run the server by running the following command in the terminal:
   #+begin_src shell
-  > python3 break42.py server <port:12345>
+  > python3 break42.py server 42424 break.42.mk
   #+end_src
 
 * How to use it on the 42 server
   Download this repository and run the client by running the following command in the terminal:
   #+begin_src shell
-  > python3 break42.py eggs.42.mk
+  > python3 break42.py 42424 break.42.mk
   #+end_src
 
 * Client Commands
