@@ -113,18 +113,6 @@ def client(port=12345):
             client_socket.send(package)
         return recv_msg(client_socket)
 
-    def handle_messages(conn):
-        while True:
-            ok, data = recv_msg(conn)
-            if ok == MessageState.END_CONNECTION:
-                log.error("Failed to read message")
-                break
-            elif data is None:
-                log.error("Failed to read message")
-            else:
-                print(data)
-
-
     while pid is None:
         name = input("Enter your Name: ")
         ok, resp = send("/register " + name)
@@ -146,7 +134,6 @@ def client(port=12345):
             log.error(f"Failed to register, try again")
             pid = None
 
-    threading.Thread(target=handle_messages, args=(conn, addr)).start()
     while True:
         data = input(f"list|buy|break|quit {name}> ")
         ok, resp = send("/"+data)
