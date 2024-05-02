@@ -3,7 +3,7 @@ import logging
 import sys
 import uuid
 import threading
-import random
+import random 
 from typing import Tuple, List
 from enum import Enum
 logging.basicConfig(level=logging.WARN)
@@ -203,7 +203,9 @@ def send_msg(conn, data:str):
         conn.send(package)
 
 def recv_msg(conn) -> Tuple[MessageState, str|None]:
-    """Reads a message from the connection and returns a tuple of (status, data) where status is True if the message is complete and False if the message is incomplete. The data is the message itself."""
+    """Reads a message from the connection and returns a tuple of (status, data) 
+    where status is True if the message is complete and False 
+    if the message is incomplete. The data is the message itself."""
     data:bytes|None = None
     
     while True:
