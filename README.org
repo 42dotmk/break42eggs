@@ -5,9 +5,11 @@ A multiplayer console based game where players join the server and compete to br
 * How it works
   Once a user joins the server they have one egg and 9 points available. 
   the user is not aware of the strength of the egg. The user can break the egg with another user.
+
   - The user with the stronger egg wins and gets 6 points.
   - The loser loses 3 points and has no egg. so he needs to buy an egg to play again. An egg costs 3 points.
   - If both users break one side of the egg each then they both gain 3 points and loose the egg.
+
 
 * How to host your own server
   Download this repository and run the server by running the following command in the terminal:

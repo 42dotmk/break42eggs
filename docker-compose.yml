@@ -1,0 +1,6 @@
+version: '3'
+services:
+  server:
+    image: break.42.mk:latest
+    ports:
+      - "42424:42424"

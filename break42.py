@@ -2,9 +2,10 @@ import socket
 import logging
 import sys
 import uuid
+import threading
+import random
 from typing import Tuple, List
 from enum import Enum
-import random
 logging.basicConfig(level=logging.WARN)
 
 # envelope: [start] data [end]
@@ -15,25 +16,24 @@ end = "[end]".encode()
 log = logging.getLogger("protocol")
 
 def main():
-    if len(sys.argv) >= 2 and sys.argv[1] == "server":
-        if len(sys.argv) >= 3:
-            port = int(sys.argv[2])
-            server(port)
-        else:
-            server(12345)
-    else:
-        if len(sys.argv) >= 2:
-            port = int(sys.argv[1])
-            client(port)
-        else:
-            client(12345)
+    port = 42424
+    host = "localhost"
+    is_server = len(sys.argv) >= 2 and sys.argv[1] == "server"
 
-def server(port=12345):
-    import threading
+    if len(sys.argv) >= 3:
+        port = int(sys.argv[2])
+    if len(sys.argv) >= 4:
+        host = sys.argv[3]
+    if is_server:
+        server(host, port)
+    else:
+        client(host, port)
+
+def server(host='localhost', port=12345):
     players = []
     log = logging.getLogger("server")
     def handle_client(conn:socket.socket, addr):
-        log.info(f"New connection {addr} connected.")
+        log.info("New connection %s connected.", addr)
         player = Player("Unknown")
         players.append(player)
 
@@ -46,7 +46,6 @@ def server(port=12345):
             if ok == MessageState.END_CONNECTION:
                 log.error("Failed to read message")
                 send("Failed to read message")
-                break
             elif data is None:
                 log.error("Failed to read message")
                 send("Failed to read message")
@@ -94,7 +93,7 @@ def server(port=12345):
         log.info(f"Connection from {addr} has been established. Details: {conn}")
         threading.Thread(target=handle_client, args=(conn, addr)).start()
 
-def client(port=12345):
+def client(host='localhost', port=12345):
     pid = None
     name = None
     logging.basicConfig(level=logging.DEBUG)
@@ -245,4 +244,3 @@ def unwrap(data:bytes|None)->str|None:
 
 if __name__ == '__main__':
     main()
-    import sys
