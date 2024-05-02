@@ -81,8 +81,6 @@ def server(host='localhost', port=12345):
         conn.close()
 
     print("Starting server")
-    host = socket.gethostname()
-
     server_socket = socket.socket()
     server_socket.bind((host, port))
     server_socket.listen(5)
@@ -98,8 +96,6 @@ def client(host='localhost', port=12345):
     name = None
     logging.basicConfig(level=logging.DEBUG)
     log = logging.getLogger(__name__)
-
-    host = socket.gethostname()
 
     client_socket = socket.socket()
     client_socket.connect((host, port))
