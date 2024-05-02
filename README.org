@@ -12,13 +12,13 @@ A multiplayer console based game where players join the server and compete to br
 * How to host your own server
   Download this repository and run the server by running the following command in the terminal:
   #+begin_src shell
-  > python3 server.py <port:12345>
+  > python3 break42.py server <port:12345>
   #+end_src
 
 * How to use it on the 42 server
   Download this repository and run the client by running the following command in the terminal:
   #+begin_src shell
-  > python3 client.py eggs.42.mk
+  > python3 break42.py eggs.42.mk
   #+end_src
 
 * Client Commands
