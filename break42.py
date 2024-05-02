@@ -16,18 +16,12 @@ end = "[end]".encode()
 log = logging.getLogger("protocol")
 
 def main():
-    port = 42424
-    host = "localhost"
+    port = len(sys.argv) >= 3 and int(sys.argv[2]) or 42424
+    host = len(sys.argv) >= 4 and sys.argv[3] or "localhost"
     is_server = len(sys.argv) >= 2 and sys.argv[1] == "server"
 
-    if len(sys.argv) >= 3:
-        port = int(sys.argv[2])
-    if len(sys.argv) >= 4:
-        host = sys.argv[3]
-    if is_server:
-        server(host, port)
-    else:
-        client(host, port)
+    func = is_server and server or client
+    func(host, port)
 
 def server(host='localhost', port=12345):
     players = []
