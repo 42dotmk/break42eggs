@@ -1,5 +1,6 @@
 #!/bin/python
 import socket
+import os
 import logging
 import sys
 import uuid
@@ -48,6 +49,13 @@ def server(host='localhost', port=12345):
                 player.name = name
                 players.append(player)
                 send(f"ok {player.pid}")
+            elif data.startswith("/join"):
+                pid = data.split(" ")[1]
+                player = next((p for p in players if p.pid == pid), None)
+                if player is None:
+                    send("Error: Such player does not exist")
+                else:
+                    send(f"Welcome {player.name}, you have {player.points} points")
             elif data.startswith("/list"):
                 sorted_players = sorted(players, key=lambda x: x.points, reverse=True)
                 send("Leaderboard: \n============\n" + 
@@ -87,6 +95,9 @@ def server(host='localhost', port=12345):
 
 def client(host='localhost', port=12345):
     pid = None
+    if not os.path.exists("pid.txt"):
+        with open("pid.txt", "r") as f:
+            pid = f.read()
     name = None
     logging.basicConfig(level=logging.DEBUG)
     log = logging.getLogger(__name__)
@@ -94,13 +105,18 @@ def client(host='localhost', port=12345):
     client_socket = socket.socket()
     client_socket.connect((host, port))
 
-
+    
     def send(data):
         packages = wrap(data)
         log.info(f"sending {len(packages)}")
         for package in packages:
             client_socket.send(package)
         return recv_msg(client_socket)
+    
+    if pid is not None:
+        ok, resp = send("/join " + pid)
+        if ok == MessageState.DATA:
+            print(resp)
 
     while pid is None:
         name = input("Enter your Name: ")
@@ -113,6 +129,8 @@ def client(host='localhost', port=12345):
             continue
         try:
             (ok, pid) = resp.split(" ")
+            with open("pid.txt", "w") as f:
+                f.write(pid)
         except:
             ok = "notok"
             log.error(f"Failed to register, try again")
