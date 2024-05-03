@@ -1,40 +1,42 @@
 #+title: Break 42 Eggs
 
-A multiplayer console based game where players join the server and compete to break the most eggs. The game is played in rounds, each round lasts infinitely. The player who breaks the most eggs three days after easter wins. The game will shut down after.
+A multiplayer console based game where players join the server and compete to break the most eggs. 
+The player who breaks the most eggs three days after easter at 00:00 wins and gets a price by ~b42~ crew.
 
 * How it works
   Once a user joins the server they have one egg and 9 points available. 
-  the user is not aware of the strength of the egg. The user can break the egg with another user.
+  The user is not aware of the strength of their egg. The user can break egg with another user.
 
+  - An egg costs 3 points.
   - The user with the stronger egg wins and gets 6 points.
-  - The loser loses 3 points and has no egg. so he needs to buy an egg to play again. An egg costs 3 points.
+  - The loser loses 3 points and has no egg so he needs to buy an egg to play again. 
   - If both users break one side of the egg each then they both gain 3 points and loose the egg.
+  - The users(you can see them by typing ~list~) prefixed with ~+~ are ones who have egg in hand and ~-~ are the ones who don't have an egg in hand and need to buy one.
 
-   In general the program has the following arguments
+  The program can run in a server and client mode and has the following arguments
   #+begin_src shell
-  > python3 break42.py {server|client} {port} {host}
+  > python3 break42.py {'server'|'client'} <port> <host>
   #+end_src
 
-* How to use it on the 42 server
+* How to use it on the our 42 server:
+  The default host and port already point to the break 42 server.
   Download this repository and run the client by running the following command in the terminal:
   #+begin_src shell
   > python3 break42.py
   #+end_src
 
+  After registering a ~pid.txt~ file is created so you can resume your play by running the same command again.
+  The data is kept in memory on the server.
+
 * How to host your own server
   Download this repository and run the server by running the following command in the terminal:
   #+begin_src shell
-  > python3 break42.py server 42424 break.42.mk
+  > python3 break42.py server <the-port> <the-host> 
   #+end_src
-
 
 * Client Commands
   - There are just four commands that the client can use:
-    - buy - Buy an egg
-    - list - leaderboard
-    - break <user> - Break an egg with a user
-    - quit - Quit the game
-
-  
-
-
+    - ~list~ - show the Leaderboard
+    - ~buy~ - Buy an egg
+    - ~break <user>~ - Break an egg with the ~<user>~
+    - ~quit~ - Quit the game
