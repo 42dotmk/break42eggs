@@ -117,6 +117,8 @@ def client(host='localhost', port=12345):
         ok, resp = send("/join " + pid)
         if ok == MessageState.DATA:
             print(resp)
+            if resp is not None and resp.startswith("Welcome"):
+                name = resp.split(" ")[1].split(",")[0].strip()
 
     while pid is None:
         name = input("Enter your Name: ")
