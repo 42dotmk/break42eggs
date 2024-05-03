@@ -1,3 +1,4 @@
+#!/bin/python
 import socket
 import logging
 import sys
@@ -6,20 +7,20 @@ import threading
 import random 
 from typing import Tuple, List
 from enum import Enum
+
 logging.basicConfig(level=logging.WARN)
 
-# envelope: [start] data [end]
-# request: /[command] [args]
-# response: [status] [response]
+#envelope: [start] data [end]
+#request: /[command] [args]
+#response: [status] [response]
 start = "[start]".encode()
 end = "[end]".encode()
 log = logging.getLogger("protocol")
 
 def main():
     port = len(sys.argv) >= 3 and int(sys.argv[2]) or 42424
-    host = len(sys.argv) >= 4 and sys.argv[3] or "localhost"
+    host = len(sys.argv) >= 4 and sys.argv[3] or "ip.42.mk"
     is_server = len(sys.argv) >= 2 and sys.argv[1] == "server"
-
     func = is_server and server or client
     func(host, port)
 
@@ -29,7 +30,6 @@ def server(host='localhost', port=12345):
     def handle_client(conn:socket.socket, addr):
         log.info("New connection %s connected.", addr)
         player = Player("Unknown")
-        players.append(player)
 
         def send(data):
             log.info(f"Sending {data}")
@@ -46,6 +46,7 @@ def server(host='localhost', port=12345):
             elif data.startswith("/register"):
                 name = data.split(" ")[1]
                 player.name = name
+                players.append(player)
                 send(f"ok {player.pid}")
             elif data.startswith("/list"):
                 sorted_players = sorted(players, key=lambda x: x.points, reverse=True)
@@ -56,7 +57,6 @@ def server(host='localhost', port=12345):
                     send("Usage: /break [player]")
                     continue
                 other_name = data.split(" ")[1]
-
                 other = next((p for p in players if p.name.lower() == other_name.lower()), None)
                 if other is None:
                     send("Player not found")
@@ -165,7 +165,7 @@ class Player:
         if x1>x2 and y1>y2:
             self.points += 6
             other.points -= 3
-            self.broken_basket.append(other.egg)
+            other.broken_basket.append(other.egg)
             other.egg = None
             msg = f"{self.name} broke {other.name}'s egg"
 
@@ -189,7 +189,6 @@ class Player:
 
 def send_msg(conn, data:str):
     """Sends the message to the connection"""
-    log.debug("Sending %b", data)
     packages = wrap(data)
     log.debug(f"Sending %s packages", len(packages))
     for package in packages:
