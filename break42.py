@@ -95,7 +95,7 @@ def server(host='localhost', port=12345):
 
 def client(host='localhost', port=12345):
     pid = None
-    if not os.path.exists("pid.txt"):
+    if os.path.exists("pid.txt"):
         with open("pid.txt", "r") as f:
             pid = f.read()
     name = None
