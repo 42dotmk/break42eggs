@@ -28,6 +28,13 @@ def main():
 def server(host='localhost', port=12345):
     players = []
     log = logging.getLogger("server")
+    log.setLevel(logging.INFO)
+    if os.path.exists("players.txt"):
+        log.info("Loading players from file")
+        with open("players.txt", "r") as f:
+            players = [Player(*p.split()) for p in f.read().split("\n") if p]
+            log.info("Loaded %s players", len(players))
+
     def handle_client(conn:socket.socket, addr):
         log.info("New connection %s connected.", addr)
         player = Player("Unknown")
@@ -163,9 +170,10 @@ class Player:
     egg: Tuple[int, int]|None = (0, 0)
     broken_basket: List[Tuple[int, int]] = []
 
-    def __init__(self, name):
+    def __init__(self, name, pid=None, points = 9):
         self.name = name
-        self.pid = str(uuid.uuid4())
+        self.pid = pid or str(uuid.uuid4())
+        self.points = int(points)
 
     def buy_egg(self):
         self.points -= 3

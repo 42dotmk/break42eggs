@@ -2,5 +2,7 @@ version: '3'
 services:
   server:
     image: break.42.mk:latest
+    volumes:
+      - ./players.txt:/app/players.txt
     ports:
       - "42424:42424"
