@@ -156,7 +156,7 @@ class MessageState(Enum):
     END_CONNECTION = 2
 
 class Player: 
-    pid: str = str(uuid.uuid4())
+    pid: str = ""
     name: str = ""
     points: int = 9
     conn: socket.socket|None = None
@@ -165,6 +165,7 @@ class Player:
 
     def __init__(self, name):
         self.name = name
+        self.pid = str(uuid.uuid4())
 
     def buy_egg(self):
         self.points -= 3
